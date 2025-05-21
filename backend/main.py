@@ -11,5 +11,5 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(title="Todo LLM App", lifespan=lifespan)
 app.include_router(api_router)
