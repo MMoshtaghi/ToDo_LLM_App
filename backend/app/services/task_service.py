@@ -14,6 +14,9 @@ class TaskService:
         self.session.refresh(task_db)
         return task_db
     
+    def get_task_page(self, offset:int, limit:int):
+        return self.session.exec( select(Task).offset(offset).limit(limit) ).all()
+
     def get_task(self, task_id:int) -> Task:
         task_db = self.session.get(Task, task_id)
         if not task_db:
