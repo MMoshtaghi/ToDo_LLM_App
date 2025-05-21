@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status, Query
 from typing import Annotated
 from app.db.database import Session, get_session
-from app.models.task import TaskCreate, TaskResponse, TaskUpdate
+from app.schemas.task import TaskCreate, TaskResponse, TaskUpdate
 from app.services.task_service import TaskService
 
 router = APIRouter()

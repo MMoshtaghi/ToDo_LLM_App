@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 
-from app.models.task import Task, TaskCreate, TaskResponse, TaskUpdate
+from app.schemas.task import Task, TaskCreate, TaskResponse, TaskUpdate
 
 
 router = APIRouter()
