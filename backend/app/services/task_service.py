@@ -19,3 +19,25 @@ class TaskService:
         if not task_db:
             raise HTTPException(status_code=404, detail="Task not found")
         return task_db
+    
+    def delete_task(self, task_id:int):
+        task_db = self.session.get(Task, task_id)
+        if not task_db:
+            raise HTTPException(status_code=404, detail="Task not found")
+        self.session.delete(task_db)
+        self.session.commit()
+    
+    def edit_task(self, task_id:int, task_update:TaskUpdate) -> Task:
+        # exclude_unset=True : This tells Pydantic to not include the values that were not sent by the client.
+        task_update_dumped = task_update.model_dump(exclude_unset=True)
+
+        task_db = self.session.get(Task, task_id)
+        if not task_db:
+            raise HTTPException(status_code=404, detail="Task not found")
+        task_db.sqlmodel_update(task_update_dumped)
+
+        self.session.add(task_db)
+        self.session.commit()
+        self.session.refresh(task_db)
+        return task_db
+   
