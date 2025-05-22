@@ -10,6 +10,6 @@ class Settings(BaseSettings):
     VALID_OPENAI_MODELS: list[str] = ["gpt-4o"]
     GEMINI_API_KEY: str = ""
     OPENAI_API_KEY: str = ""
-    model_config = SettingsConfigDict(env_file="backend/.env")
+    model_config = SettingsConfigDict(env_file=".env")
 
 settings = Settings()

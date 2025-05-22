@@ -44,7 +44,7 @@ class TaskService:
         self.session.refresh(task_db)
         return task_db
     
-    def tag(self, task_id:int, tag_id:int):
+    def tag(self, task_id:int, tag_id:int) -> Task:
         task_db = self.session.get(Task, task_id)
         if not task_db:
             raise HTTPException(status_code=404, detail="Task not found")
@@ -62,7 +62,7 @@ class TaskService:
         self.session.refresh(task_db)
         return task_db
     
-    def untag(self, task_id:int, tag_id:int):
+    def untag(self, task_id:int, tag_id:int) -> Task:
         task_db = self.session.get(Task, task_id)
         if not task_db:
             raise HTTPException(status_code=404, detail="Task not found")
