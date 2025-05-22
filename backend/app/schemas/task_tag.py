@@ -23,7 +23,7 @@ class TaskCreate(TaskBase):
 class Task(TaskBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     created_at: datetime = Field(default_factory=datetime.now)
-    tags: list["Tag"] | None = Relationship(back_populates="tasks", link_model=TaskTagLink)
+    tags: list["Tag"] = Relationship(back_populates="tasks", link_model=TaskTagLink)
 
 
 class TaskResponse(TaskBase):
@@ -31,7 +31,7 @@ class TaskResponse(TaskBase):
     created_at: datetime
 
 class TaskResponseWithTags(TaskResponse):
-    tags: list["TagResponse"] | None = None
+    tags: list["TagResponse"] = []
 
 
 # This is almost the same as TaskBase, but all the fields are optional, so we can't simply inherit from TaskBase.
@@ -55,14 +55,14 @@ class TagCreate(TagBase):
 
 class Tag(TagBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    tasks: list[Task] | None = Relationship(back_populates="tags", link_model=TaskTagLink)
+    tasks: list[Task] = Relationship(back_populates="tags", link_model=TaskTagLink)
 
 
 class TagResponse(TagBase):
     id: int
 
 class TagResponseWithTasks(TagResponse):
-    tasks: list[TaskResponse] | None = None
+    tasks: list[TaskResponse] = []
 
 
 # This is almost exactly TagBase, bc the tag field is the only attribute.

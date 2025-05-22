@@ -29,7 +29,7 @@ def get_tag(tag_id:int, tag_service:TagService=Depends(get_tag_service)):
 def delete_tag(tag_id:int, tag_service:TagService=Depends(get_tag_service)):
     return tag_service.delete_tag(tag_id=tag_id)
 
-@router.patch("/{tag_id}", response_model=TagResponseWithTasks)
+@router.patch("/{tag_id}/edit", response_model=TagResponseWithTasks)
 def edit_tag(tag_id:int, tag_update:TagUpdate, tag_service:TagService=Depends(get_tag_service)):
     return tag_service.edit_tag(tag_id=tag_id, tag_update=tag_update)
 

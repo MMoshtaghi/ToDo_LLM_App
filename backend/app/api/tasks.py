@@ -29,7 +29,15 @@ def get_task(task_id:int, task_service:TaskService=Depends(get_task_service)):
 def delete_task(task_id:int, task_service:TaskService=Depends(get_task_service)):
     return task_service.delete_task(task_id=task_id)
 
-@router.patch("/{task_id}", response_model=TaskResponseWithTags)
+@router.patch("/{task_id}/edit", response_model=TaskResponseWithTags)
 def edit_task(task_id:int, task_update:TaskUpdate, task_service:TaskService=Depends(get_task_service)):
     return task_service.edit_task(task_id=task_id, task_update=task_update)
 # Mark as Done can be done via edit_task
+
+@router.patch("/{task_id}/tag", response_model=TaskResponseWithTags)
+def tag(task_id:int, tag_id:int, task_service:TaskService=Depends(get_task_service)):
+    return task_service.tag(task_id=task_id, tag_id=tag_id)
+
+@router.patch("/{task_id}/untag", response_model=TaskResponseWithTags)
+def untag(task_id:int, tag_id:int, task_service:TaskService=Depends(get_task_service)):
+    return task_service.untag(task_id=task_id, tag_id=tag_id)
