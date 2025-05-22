@@ -12,18 +12,6 @@ from .task_service import TaskService
 from .tag_service import TagService
 
 
-def get_llm(llm_name:str):
-    if llm_name in settings.VALID_GEMINI_MODELS:
-        from langchain_google_genai import ChatGoogleGenerativeAI
-        # For now we use the only one model
-        return ChatGoogleGenerativeAI(model=llm_name, google_api_key=SecretStr(settings.GEMINI_API_KEY))
-    elif llm_name in settings.VALID_OPENAI_MODELS:
-        from langchain_openai import ChatOpenAI
-        return ChatOpenAI(model=llm_name, api_key=SecretStr(settings.OPENAI_API_KEY))
-    else:
-        raise ValueError(f"Invalid model: {llm_name}",
-                         f"Valid options are: {settings.VALID_GEMINI_MODELS}, {settings.VALID_OPENAI_MODELS}")
-
 def get_all_tags(tag_service:TagService, page_size:int=100) -> list[Tag]:
     all_tags = []
     offset = 0
@@ -42,7 +30,20 @@ class SmartTagResult(BaseModel):
 
 # class SmartTags(BaseModel):
 #     tags: list[SmartTagResult]
-        
+
+
+def get_llm(llm_name:str):
+    if llm_name in settings.VALID_GEMINI_MODELS:
+        from langchain_google_genai import ChatGoogleGenerativeAI
+        # For now we use the only one model
+        return ChatGoogleGenerativeAI(model=llm_name, google_api_key=SecretStr(settings.GEMINI_API_KEY)).with_structured_output(schema=SmartTagResult)
+    elif llm_name in settings.VALID_OPENAI_MODELS:
+        from langchain_openai import ChatOpenAI
+        return ChatOpenAI(model=llm_name, api_key=SecretStr(settings.OPENAI_API_KEY)).with_structured_output(schema=SmartTagResult, method="json_schema")
+    else:
+        raise ValueError(f"Invalid model: {llm_name}",
+                         f"Valid options are: {settings.VALID_GEMINI_MODELS}, {settings.VALID_OPENAI_MODELS}")
+
 
 class AIService:
     def __init__(self):
@@ -118,19 +119,21 @@ class AIService:
                 available_tags=available_tags,
             )
             llm = get_llm(self.llm_name)
-            llm_response = llm.with_structured_output(schema=SmartTagResult).invoke(prompt)
+            llm_response = llm.invoke(prompt)
             result = SmartTagResult.model_validate(llm_response)
             
             # check if the tag (case insensitive) is already in available_tags and current_tags
             if any(tag.lower() == result.tag_name.lower() for tag in current_tags):
                 raise ValueError(f"\n\nThe LLM hallucinated. Tag already assigned\n\n")
             
-            picked_tags = [tag for tag in available_tags if tag.lower() == result.tag_name.lower()]
+            picked_tags = [t for t in all_tags if t.tag.lower() == result.tag_name.lower()]
             if len(picked_tags) == 0: # the tag is new
+                logging.info(f"\nthe tag is new\n")
                 new_tag = tag_service.create_tag(TagCreate(tag=result.tag_name))
                 tag_service.session.refresh(new_tag)
                 tag_id = TagResponse.model_validate(new_tag).id
             else: # the tag is already in available_tags
+                logging.info(f"\nthe tag is already in available_tags\n")
                 tag_id = TagResponse.model_validate(picked_tags[0]).id
                 
             return task_service.tag(task_id=task_id, tag_id=tag_id)
