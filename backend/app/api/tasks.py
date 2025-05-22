@@ -17,7 +17,7 @@ def get_task_service(session:Session=Depends(get_session)) -> TaskService:
 def create_task(task:TaskCreate, task_service:TaskService=Depends(get_task_service)):
     return task_service.create_task(task)
 
-@router.get("/tasks", response_model=list[TaskResponseWithTags])
+@router.get("/task_page", response_model=list[TaskResponseWithTags])
 def get_task_page(offset:int=0, limit:Annotated[int, Query(le=10)]=10, task_service:TaskService=Depends(get_task_service)):
     return task_service.get_task_page(offset=offset, limit=limit)
 

@@ -17,7 +17,7 @@ def get_tag_service(session:Session=Depends(get_session)) -> TagService:
 def create_tag(tag:TagCreate, tag_service:TagService=Depends(get_tag_service)):
     return tag_service.create_tag(tag)
 
-@router.get("/tags", response_model=list[TagResponseWithTasks])
+@router.get("/tag_page", response_model=list[TagResponseWithTasks])
 def get_tag_page(offset:int=0, limit:Annotated[int, Query(le=10)]=10, tag_service:TagService=Depends(get_tag_service)):
     return tag_service.get_tag_page(offset=offset, limit=limit)
 
@@ -29,7 +29,7 @@ def get_tag(tag_id:int, tag_service:TagService=Depends(get_tag_service)):
 def delete_tag(tag_id:int, tag_service:TagService=Depends(get_tag_service)):
     return tag_service.delete_tag(tag_id=tag_id)
 
-@router.patch("/{tag_id}/edit   ", response_model=TagResponseWithTasks)
+@router.patch("/{tag_id}/edit", response_model=TagResponseWithTasks)
 def edit_tag(tag_id:int, tag_update:TagUpdate, tag_service:TagService=Depends(get_tag_service)):
     return tag_service.edit_tag(tag_id=tag_id, tag_update=tag_update)
 
