@@ -11,5 +11,6 @@ dependencies = [
     "langchain-google-genai>=2.1.4",
     "langchain-openai>=0.3.17",
     "pydantic-settings>=2.9.1",
+    "pytest>=8.3.5",
     "sqlmodel>=0.0.24",
 ]
