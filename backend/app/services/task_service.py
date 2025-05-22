@@ -1,6 +1,6 @@
 from sqlmodel import Session, select
 from fastapi import HTTPException
-from app.schemas.task import Task, TaskCreate, TaskResponse, TaskUpdate
+from app.schemas.task_tag import *
 
 
 class TaskService:
