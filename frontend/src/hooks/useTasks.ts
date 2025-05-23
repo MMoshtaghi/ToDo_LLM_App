@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { tasksApi } from '../api/tasksApi';
+import { aiApi } from '../api/aiApi';
 import { TaskResponseWithTags, TaskCreate, TaskUpdate } from '../types/task';
 
 export const useTasks = () => {
@@ -48,9 +49,9 @@ export const useTasks = () => {
     console.error('Error deleting task:', err);
     setError('Failed to delete task');
   }
-};
+  };
 
-const tagTask = async (taskId: number, tagId: number) => {
+  const tagTask = async (taskId: number, tagId: number) => {
   try {
     const updatedTask = await tasksApi.tagTask(taskId, tagId);
     setTasks(prev => prev.map(t => t.id === taskId ? updatedTask : t));
@@ -58,9 +59,9 @@ const tagTask = async (taskId: number, tagId: number) => {
     console.error('Error tagging task:', err);
     setError('Failed to tag task');
   }
-};
+  };
 
-const untagTask = async (taskId: number, tagId: number) => {
+  const untagTask = async (taskId: number, tagId: number) => {
   try {
     const updatedTask = await tasksApi.untagTask(taskId, tagId);
     setTasks(prev => prev.map(t => t.id === taskId ? updatedTask : t));
@@ -68,11 +69,27 @@ const untagTask = async (taskId: number, tagId: number) => {
     console.error('Error untagging task:', err);
     setError('Failed to untag task');
   }
-};  
+  };
+
+  const smartTag = async (taskId: number) => {
+  setLoading(true);
+  try {
+    const updatedTask = await aiApi.smartTag(taskId);
+    setTasks(prev => prev.map(t => t.id === taskId ? updatedTask : t));
+    return updatedTask;
+  } catch (err) {
+    console.error('Error smart-tagging task:', err);
+    setError('Failed to smart tag task');
+    throw err;
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   useEffect(() => {
     fetchTasks();
   }, []);
 
-  return { tasks, loading, error, createTask, deleteTask, tagTask, untagTask, editTask, fetchTasks };
+  return { tasks, loading, error, createTask, fetchTasks, deleteTask, editTask, tagTask, untagTask, smartTag};
 };
