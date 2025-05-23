@@ -88,12 +88,21 @@ def test_tag_and_untag_task(client: TestClient):
     task_id = task_resp.json()["id"]
     # Tag the task
     response = client.patch(f"/tasks/{task_id}/tag", params={"tag_id": tag_id})
-    assert response.status_code == 200
+    # Check task's tags
     assert any(t["id"] == tag_id for t in response.json()["tags"])
+    # Check tag's tasks
+    tag_get_resp = client.get(f"/tags/{tag_id}")
+    assert tag_get_resp.status_code == 200
+    assert any(t["id"] == task_id for t in tag_get_resp.json()["tasks"])
     # Untag the task
     response = client.patch(f"/tasks/{task_id}/untag", params={"tag_id": tag_id})
     assert response.status_code == 200
+    # Check task's tags
     assert all(t["id"] != tag_id for t in response.json()["tags"])
+    # Check tag's tasks
+    tag_get_resp = client.get(f"/tags/{tag_id}")
+    assert tag_get_resp.status_code == 200
+    assert all(t["id"] != task_id for t in tag_get_resp.json()["tasks"])
 
 # -----------------------------------------------------------------
 
