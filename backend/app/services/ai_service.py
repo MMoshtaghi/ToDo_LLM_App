@@ -45,6 +45,12 @@ def get_llm(llm_name:str):
                          f"Valid options are: {settings.VALID_GEMINI_MODELS}, {settings.VALID_OPENAI_MODELS}")
 
 
+def call_llm(llm_name:str, prompt:str) -> SmartTagResult:
+    llm = get_llm(llm_name)
+    llm_response = llm.invoke(prompt)
+    return SmartTagResult.model_validate(llm_response)
+
+
 class AIService:
     def __init__(self):
         self.llm_name = "gemini-2.0-flash"
@@ -118,17 +124,17 @@ class AIService:
                 current_tags=current_tags,
                 available_tags=available_tags,
             )
-            llm = get_llm(self.llm_name)
-            llm_response = llm.invoke(prompt)
-            result = SmartTagResult.model_validate(llm_response)
-            
+
+            # Isolate the llm call to be able to mock it for tests
+            result = call_llm(self.llm_name, prompt)
+
             # check if the tag (case insensitive) is already in available_tags and current_tags
             if any(tag.lower() == result.tag_name.lower() for tag in current_tags):
                 raise ValueError(f"\n\nThe LLM hallucinated. Tag already assigned\n\n")
             
             picked_tags = [t for t in all_tags if t.tag.lower() == result.tag_name.lower()]
             if len(picked_tags) == 0: # the tag is new
-                logging.info(f"\nthe tag is new\n")
+                logging.info(f"\nthe tag is new and will create it with the LLM-generated name\n")
                 new_tag = tag_service.create_tag(TagCreate(tag=result.tag_name))
                 tag_service.session.refresh(new_tag)
                 tag_id = TagResponse.model_validate(new_tag).id
