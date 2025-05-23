@@ -19,4 +19,7 @@ export const tasksApi = {
     
   tagTask: (taskId: number, tagId: number): Promise<TaskResponseWithTags> =>
     apiClient.patch(`/tasks/${taskId}/tag?tag_id=${tagId}`, {}),
+
+  untagTask: (taskId: number, tagId: number): Promise<TaskResponseWithTags> =>
+    apiClient.patch(`/tasks/${taskId}/untag?tag_id=${tagId}`, {}),
 };
