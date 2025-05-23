@@ -1,11 +1,5 @@
-__pycache__
-
 # Env
-.venv/
 .env
 
 #VSCode
 .vscode/
-
-# Database
-data/
