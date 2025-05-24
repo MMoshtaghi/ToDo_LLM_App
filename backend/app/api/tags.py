@@ -18,7 +18,7 @@ def create_tag(tag:TagCreate, tag_service:TagService=Depends(get_tag_service)):
     return tag_service.create_tag(tag)
 
 @router.get("/tag_page", response_model=list[TagResponseWithTasks])
-def get_tag_page(offset:int=0, limit:Annotated[int, Query(le=10)]=10, tag_service:TagService=Depends(get_tag_service)):
+def get_tag_page(offset:int=0, limit:Annotated[int, Query(le=100)]=100, tag_service:TagService=Depends(get_tag_service)):
     return tag_service.get_tag_page(offset=offset, limit=limit)
 
 @router.get("/{tag_id}", response_model=TagResponseWithTasks)

@@ -5,7 +5,7 @@ export const tasksApi = {
   createTask: (task: TaskCreate): Promise<TaskResponseWithTags> =>
     apiClient.post('/tasks/', task),
     
-  getTaskPage: (offset = 0, limit = 10): Promise<TaskResponseWithTags[]> =>
+  getTaskPage: (offset = 0, limit = 100): Promise<TaskResponseWithTags[]> =>
     apiClient.get(`/tasks/task_page?offset=${offset}&limit=${limit}`),
     
   getTask: (taskId: number): Promise<TaskResponseWithTags> =>

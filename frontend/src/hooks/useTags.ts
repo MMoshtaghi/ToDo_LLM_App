@@ -9,7 +9,7 @@ export const useTags = () => {
   const [errorContext, setErrorContext] = useState<'fetch' | 'create' | 'edit' | 'delete' | null>(null);
 
 
-  const fetchTags = async (offset = 0, limit = 10) => {
+  const fetchTags = async (offset = 0, limit = 100) => {
     setLoading(true);
     try {
       const data = await tagsApi.getTagPage(offset, limit);

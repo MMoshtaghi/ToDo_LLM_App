@@ -9,7 +9,10 @@ export const useTasks = () => {
   const [error, setError] = useState<string | null>(null);
   const [errorContext, setErrorContext] = useState<'fetch' | 'create' | 'edit' | 'delete' | 'tag' | 'untag' | 'smartTag' | null>(null);
 
-  const fetchTasks = async (offset = 0, limit = 10) => {
+  // ! Warning : Now we are using client-side pagination
+  // ! with hard-coded limit size to 100 (the max) for the backend
+  // ! we should get the total count of rows from the backend for server-side pagination
+  const fetchTasks = async (offset = 0, limit = 100) => {
     setLoading(true);
     try {
       const data = await tasksApi.getTaskPage(offset, limit);

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTasks } from '../hooks/useTasks';
+import { usePagination } from '../hooks/usePagination';
 import TaskForm from '../components/tasks/TaskForm';
 import TaskList from '../components/tasks/TaskList';
 import TaskFilters from '../components/tasks/TaskFilters';
@@ -24,6 +25,27 @@ const TasksPage: React.FC = () => {
     if (filter === 'completed') return task.is_done;
     return true;
   });
+
+  // Pagination Hook
+  const {
+    page,
+    limit,
+    // setPage,
+    setLimit,
+    nextPage,
+    prevPage,
+    maxPage,
+    offset,
+    // resetPage,
+  } = usePagination(0, 10, filteredTasks.length);
+
+  // CLient-side Paginated tasks for current page
+  const paginatedTasks = filteredTasks.slice(offset, offset + limit);
+
+  // Reset page when filter changes
+  // useEffect(() => {
+  //   resetPage();
+  // }, [filter, resetPage]);
 
   // Error Handling:
   // If there’s an error (e.g., failed to fetch tasks), display a user-friendly error message.
@@ -88,14 +110,50 @@ const TasksPage: React.FC = () => {
       {loading ? (
         <Loading text="Loading tasks..." />
       ) : (
-        <TaskList
-          tasks={filteredTasks}
-          onDelete={deleteTask}
-          onEdit={editTask}
-          onTag={tagTask}
-          onUntag={untagTask}
-          onSmartTag={smartTag}
-        />
+        <>
+          <TaskList
+            tasks={paginatedTasks}
+            onDelete={deleteTask}
+            onEdit={editTask}
+            onTag={tagTask}
+            onUntag={untagTask}
+            onSmartTag={smartTag}
+          />
+
+          {/* Pagination Controls */}
+          {filteredTasks.length > limit && (
+          <div className="flex justify-center items-center mt-4 space-x-4">
+            <Button
+              variant="secondary"
+              disabled={page === 0}
+              onClick={prevPage}
+            >
+              Previous
+            </Button>
+            <span>
+              Page {page + 1} of {maxPage + 1}
+            </span>
+            <Button
+              variant="secondary"
+              disabled={page === maxPage}
+              onClick={nextPage}
+            >
+              Next
+            </Button>
+            <select
+              value={limit}
+              onChange={e => setLimit(Number(e.target.value))}
+              className="ml-4 border rounded px-2 py-1"
+            >
+              {[5, 10, 20, 50].map(size => (
+                <option key={size} value={size}>
+                  {size} per page
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+        </>
       )}
     </div>
   );
