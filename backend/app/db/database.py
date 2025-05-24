@@ -12,5 +12,5 @@ def get_session():
 
 
 def create_db_and_tables():
-    """Initialize the tables""" 
+    """Initialize the tables"""
     SQLModel.metadata.create_all(engine)

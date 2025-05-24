@@ -1,8 +1,7 @@
 from fastapi.testclient import TestClient
-from sqlmodel import Session
 from datetime import datetime, timedelta
 
-from app.schemas.task_tag import *
+from app.schemas.task_tag import TaskCreate
 
 
 def test_create_task(client: TestClient):
@@ -10,7 +9,7 @@ def test_create_task(client: TestClient):
         "title": "Test Task",
         "description": "Test Description",
         "scheduled_for": (datetime.now() + timedelta(days=1)).isoformat(),
-        "is_done": False
+        "is_done": False,
     }
     response = client.post("/tasks/", json=data)
     assert response.status_code == 200
@@ -20,20 +19,17 @@ def test_create_task(client: TestClient):
     assert resp["is_done"] is False
     assert "id" in resp
 
+
 def test_create_task_incomplete(client: TestClient):
     # Missing required 'title'
-    data = {
-        "description": "No title"
-    }
+    data = {"description": "No title"}
     response = client.post("/tasks/", json=data)
     assert response.status_code == 422
 
+
 def test_create_task_invalid(client: TestClient):
     # Invalid type for is_done
-    data = {
-        "title": "Invalid Task",
-        "is_done": "notabool"
-    }
+    data = {"title": "Invalid Task", "is_done": "notabool"}
     response = client.post("/tasks/", json=data)
     assert response.status_code == 422
 
@@ -48,6 +44,7 @@ def test_get_taskes(client: TestClient):
     assert isinstance(tasks, list)
     assert any(t["title"] == "Get Tasks" for t in tasks)
 
+
 def test_get_task(client: TestClient):
     # Create a task and fetch it
     task = TaskCreate(title="Single Task", description="desc")
@@ -56,6 +53,7 @@ def test_get_task(client: TestClient):
     response = client.get(f"/tasks/{task_id}")
     assert response.status_code == 200
     assert response.json()["title"] == "Single Task"
+
 
 def test_edit_task(client: TestClient):
     # Create and edit a task
@@ -68,6 +66,7 @@ def test_edit_task(client: TestClient):
     assert response.json()["title"] == "Edited"
     assert response.json()["is_done"] is True
 
+
 def test_delete_task(client: TestClient):
     # Create and delete a task
     task = TaskCreate(title="Delete Me", description="desc")
@@ -78,6 +77,7 @@ def test_delete_task(client: TestClient):
     # Confirm deletion
     response = client.get(f"/tasks/{task_id}")
     assert response.status_code == 404
+
 
 def test_tag_and_untag_task(client: TestClient):
     # Create a tag
@@ -104,7 +104,9 @@ def test_tag_and_untag_task(client: TestClient):
     assert tag_get_resp.status_code == 200
     assert all(t["id"] != task_id for t in tag_get_resp.json()["tasks"])
 
+
 # -----------------------------------------------------------------
+
 
 def test_create_tag(client: TestClient):
     data = {"tag": "work"}
@@ -113,6 +115,7 @@ def test_create_tag(client: TestClient):
     resp = response.json()
     assert resp["tag"] == data["tag"]
     assert "id" in resp
+
 
 def test_create_tag_incomplete(client: TestClient):
     # Missing required 'tag'
@@ -130,6 +133,7 @@ def test_get_tags(client: TestClient):
     assert isinstance(tags, list)
     assert any(t["tag"] == "personal" for t in tags)
 
+
 def test_get_tag(client: TestClient):
     # Create a tag and fetch it
     resp = client.post("/tags/", json={"tag": "shopping"})
@@ -137,6 +141,7 @@ def test_get_tag(client: TestClient):
     response = client.get(f"/tags/{tag_id}")
     assert response.status_code == 200
     assert response.json()["tag"] == "shopping"
+
 
 def test_edit_tag(client: TestClient):
     # Create and edit a tag
@@ -147,6 +152,7 @@ def test_edit_tag(client: TestClient):
     response = client.patch(f"/tags/{tag_id}/edit", json=update)
     assert response.status_code == 200
     assert response.json()["tag"] == "edited"
+
 
 def test_delete_tag(client: TestClient):
     # Create and delete a tag

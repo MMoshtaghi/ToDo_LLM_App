@@ -10,10 +10,12 @@ from .link import TaskTagLink
 
 
 class TaskBase(SQLModel):
-    title: str = Field(index=True) # index to be able to search
+    title: str = Field(index=True)  # index to be able to search
     description: str | None = None
     is_done: bool = False
-    scheduled_for: datetime | None = Field(default=None, index=True) # index to be able to search
+    scheduled_for: datetime | None = Field(
+        default=None, index=True
+    )  # index to be able to search
 
 
 class TaskCreate(TaskBase):
@@ -29,6 +31,7 @@ class Task(TaskBase, table=True):
 class TaskResponse(TaskBase):
     id: int
     created_at: datetime
+
 
 class TaskResponseWithTags(TaskResponse):
     tags: list["TagResponse"] = []
@@ -46,7 +49,7 @@ class TaskUpdate(SQLModel):
 
 
 class TagBase(SQLModel):
-    tag: str = Field(index=True) # index to be able to search
+    tag: str = Field(index=True)  # index to be able to search
 
 
 class TagCreate(TagBase):
@@ -60,6 +63,7 @@ class Tag(TagBase, table=True):
 
 class TagResponse(TagBase):
     id: int
+
 
 class TagResponseWithTasks(TagResponse):
     tasks: list[TaskResponse] = []
