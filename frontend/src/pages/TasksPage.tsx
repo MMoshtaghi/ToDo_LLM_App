@@ -5,11 +5,12 @@ import TaskList from '../components/tasks/TaskList';
 import TaskFilters from '../components/tasks/TaskFilters';
 import Button from '../components/common/Button';
 import Loading from '../components/common/Loading';
+import Modal from '../components/common/Modal';
 
 // Functional Component
 const TasksPage: React.FC = () => {
   // Uses the useTasks hook to get all task data and actions.
-  const { tasks, loading, error, createTask, deleteTask, editTask, tagTask, untagTask, smartTag } = useTasks();
+  const { tasks, loading, error, errorContext, clearError, createTask, deleteTask, editTask, tagTask, untagTask, smartTag } = useTasks();
   
   // showForm controls whether the task creation form is visible.
   const [showForm, setShowForm] = useState(false);
@@ -27,7 +28,7 @@ const TasksPage: React.FC = () => {
   // Error Handling:
   // If there’s an error (e.g., failed to fetch tasks), display a user-friendly error message.
   // Early return pattern keeps the main render logic clean.
-  if (error) {
+  if (error && errorContext === 'fetch') {
     return (
       <div className="text-center py-8">
         <p className="text-red-600">{error}</p>
@@ -37,6 +38,15 @@ const TasksPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Error Modal for non-fetch errors */}
+      <Modal
+        isOpen={!!error && errorContext !== 'fetch'}
+        onClose={clearError}
+        title="Error"
+      >
+        <p className="text-red-600">{error}</p>
+      </Modal>
+
       {/* Header and Add Task Button:
         Displays the page title.
         Button toggles the visibility of the task creation form.

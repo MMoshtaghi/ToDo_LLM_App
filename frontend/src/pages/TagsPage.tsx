@@ -9,14 +9,14 @@ import Modal from '../components/common/Modal';
 // Functional Component
 const TagsPage: React.FC = () => {
   // Uses the useTags hook to get all task data and actions.
-  const { tags, loading, error, createTag, deleteTag, editTag } = useTags();
+  const { tags, loading, error, errorContext, clearError, createTag, deleteTag, editTag } = useTags();
   // showForm controls whether the tag creation form is visible.
   const [showForm, setShowForm] = useState(false);
 
   // Error Handling:
   // If there’s an error (e.g., failed to fetch tags), display a user-friendly error message.
   // Early return pattern keeps the main render logic clean.
-  if (error) {
+  if (error && errorContext === 'fetch') {
     return (
       <div className="text-center py-8">
         <p className="text-red-600">{error}</p>
@@ -26,6 +26,15 @@ const TagsPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Error Modal for non-fetch errors */}
+      <Modal
+        isOpen={!!error && errorContext !== 'fetch'}
+        onClose={clearError}
+        title="Error"
+      >
+        <p className="text-red-600">{error}</p>
+      </Modal>
+      
       {/* Header and Add Button:
           - Displays the page title.
           - Shows an "Add Tag" button. Clicking toggles the form visibility (showForm).

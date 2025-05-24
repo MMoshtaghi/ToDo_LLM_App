@@ -7,6 +7,7 @@ export const useTasks = () => {
   const [tasks, setTasks] = useState<TaskResponseWithTags[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [errorContext, setErrorContext] = useState<'fetch' | 'create' | 'edit' | 'delete' | 'tag' | 'untag' | 'smartTag' | null>(null);
 
   const fetchTasks = async (offset = 0, limit = 10) => {
     setLoading(true);
@@ -15,6 +16,7 @@ export const useTasks = () => {
       setTasks(data);
     } catch (err) {
       console.error('Error fetching tasks:', err);
+      setErrorContext('fetch');
       setError('Failed to fetch tasks');
     } finally {
       setLoading(false);
@@ -27,6 +29,7 @@ export const useTasks = () => {
       setTasks(prev => [newTask, ...prev]);
     } catch (err) {
         console.error('Error creating task:', err);
+        setErrorContext('create');
         setError('Failed to create task');
     }
   };
@@ -37,6 +40,7 @@ export const useTasks = () => {
       setTasks(prev => prev.map(t => t.id === id ? updatedTask : t));
     } catch (err) {
         console.error('Error editing task:', err);
+        setErrorContext('edit');
         setError('Failed to edit task');
     }
   };
@@ -47,6 +51,7 @@ export const useTasks = () => {
     setTasks(prev => prev.filter(t => t.id !== id));
   } catch (err) {
     console.error('Error deleting task:', err);
+    setErrorContext('delete');
     setError('Failed to delete task');
   }
   };
@@ -57,6 +62,7 @@ export const useTasks = () => {
     setTasks(prev => prev.map(t => t.id === taskId ? updatedTask : t));
   } catch (err) {
     console.error('Error tagging task:', err);
+    setErrorContext('tag');
     setError('Failed to tag task');
   }
   };
@@ -67,6 +73,7 @@ export const useTasks = () => {
     setTasks(prev => prev.map(t => t.id === taskId ? updatedTask : t));
   } catch (err) {
     console.error('Error untagging task:', err);
+    setErrorContext('untag');
     setError('Failed to untag task');
   }
   };
@@ -79,17 +86,23 @@ export const useTasks = () => {
     return updatedTask;
   } catch (err) {
     console.error('Error smart-tagging task:', err);
-    setError('Failed to smart tag task');
+    setErrorContext('smartTag');
+    setError('Failed to smart tag task. AI service temporarily unavailable. Please try again later.');
     throw err;
   } finally {
     setLoading(false);
   }
-};
+  };
+
+  const clearError = () => {
+    setError(null);
+    setErrorContext(null);
+  };
 
 
   useEffect(() => {
     fetchTasks();
   }, []);
 
-  return { tasks, loading, error, createTask, fetchTasks, deleteTask, editTask, tagTask, untagTask, smartTag};
+  return { tasks, loading, error, errorContext, clearError, createTask, fetchTasks, deleteTask, editTask, tagTask, untagTask, smartTag};
 };

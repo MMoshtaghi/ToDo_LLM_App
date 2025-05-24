@@ -6,6 +6,8 @@ export const useTags = () => {
   const [tags, setTags] = useState<TagResponseWithTasks[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [errorContext, setErrorContext] = useState<'fetch' | 'create' | 'edit' | 'delete' | null>(null);
+
 
   const fetchTags = async (offset = 0, limit = 10) => {
     setLoading(true);
@@ -14,6 +16,7 @@ export const useTags = () => {
       setTags(data);
     } catch (err) {
       console.error('Error fetching tags:', err);
+      setErrorContext('fetch');
       setError('Failed to fetch tags');
     } finally {
       setLoading(false);
@@ -26,6 +29,7 @@ export const useTags = () => {
       setTags(prev => [newTag, ...prev]);
     } catch (err) {
       console.error('Error creating tag:', err);
+      setErrorContext('create');
       setError('Failed to create tag');
     }
   };
@@ -36,6 +40,7 @@ export const useTags = () => {
       setTags(prev => prev.map(t => t.id === id ? updatedTag : t));
     } catch (err) {
       console.error('Error editing tag:', err);
+      setErrorContext('edit');
       setError('Failed to edit tag');
     }
   };
@@ -46,13 +51,19 @@ export const useTags = () => {
       setTags(prev => prev.filter(t => t.id !== id));
     } catch (err) {
       console.error('Error deleting tag:', err);
+      setErrorContext('delete');
       setError('Failed to delete tag');
     }
+  };
+
+  const clearError = () => {
+    setError(null);
+    setErrorContext(null);
   };
 
   useEffect(() => {
     fetchTags();
   }, []);
 
-  return { tags, loading, error, createTag, deleteTag, editTag, fetchTags };
+  return { tags, loading, error, errorContext, clearError, createTag, deleteTag, editTag, fetchTags };
 };
