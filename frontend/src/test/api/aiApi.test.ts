@@ -36,7 +36,7 @@ describe('AI API', () => {
       // The AI should have added tags based on the task content
       // Note: This test depends on your AI service working
       console.log('Smart tagged task:', taggedTask);
-    }, 10000);
+    }, 20000);
 
     it('should handle smart tagging for non-existent task', async () => {
       await expect(aiApi.smartTag(99999)).rejects.toThrow();
