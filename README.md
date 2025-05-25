@@ -16,6 +16,9 @@
     - Pagination for tasks
 
 
+![ToDoAppUI.png](Assets/ToDoAppUI.png)
+
+
 # Key Design and Architectural Choices
 
 The project has a modular design with easy navigation and clean separation of concerns.
