@@ -51,10 +51,11 @@ The project has a modular design with easy navigation and clean separation of co
 
 
 # How to use it?
-## Production Mode
+## Production Mode (TODO!)
+Check out [DockerUsageGuide.md](./DockerUsageGuide.md). But not ready yet.
+For now use the Dev Mode please :)
 
-
-## Dev Mode
+## Dev Mode (without Docker)
 ### Backend
 
 ```bash
