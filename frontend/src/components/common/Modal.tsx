@@ -16,13 +16,13 @@ const Modal: React.FC<ModalProps> = ({
   title,
   children,
   size = 'md',
-  showCloseButton = true
+  showCloseButton = true,
 }) => {
   const sizeClasses = {
     sm: 'max-w-md',
     md: 'max-w-lg',
     lg: 'max-w-2xl',
-    xl: 'max-w-4xl'
+    xl: 'max-w-4xl',
   };
 
   useEffect(() => {
@@ -55,14 +55,14 @@ const Modal: React.FC<ModalProps> = ({
         />
 
         {/* Modal */}
-        <div className={`inline-block w-full ${sizeClasses[size]} p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-lg relative`}>
+        <div
+          className={`inline-block w-full ${sizeClasses[size]} p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-lg relative`}
+        >
           {/* Header */}
           {(title || showCloseButton) && (
             <div className="flex items-center justify-between mb-4">
               {title && (
-                <h3 className="text-lg font-medium text-gray-900">
-                  {title}
-                </h3>
+                <h3 className="text-lg font-medium text-gray-900">{title}</h3>
               )}
               {showCloseButton && (
                 <Button

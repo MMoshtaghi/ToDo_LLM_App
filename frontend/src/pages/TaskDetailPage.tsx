@@ -17,7 +17,7 @@ const TaskDetailPage: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      const foundTask = tasks.find(t => t.id === parseInt(id));
+      const foundTask = tasks.find((t) => t.id === parseInt(id));
       setTask(foundTask || null);
     }
   }, [id, tasks]);
@@ -49,11 +49,7 @@ const TaskDetailPage: React.FC = () => {
     <div className="max-w-2xl mx-auto">
       <div className="bg-white rounded-lg shadow-lg p-6">
         <div className="flex justify-between items-start mb-6">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate('/tasks')}
-          >
+          <Button variant="ghost" size="sm" onClick={() => navigate('/tasks')}>
             ← Back to Tasks
           </Button>
           <div className="flex space-x-2">
@@ -82,7 +78,9 @@ const TaskDetailPage: React.FC = () => {
           size="sm"
         >
           <div className="space-y-4">
-            <p className="text-gray-700">Are you sure you want to delete this task?</p>
+            <p className="text-gray-700">
+              Are you sure you want to delete this task?
+            </p>
             <div className="flex justify-end space-x-2">
               <Button
                 variant="secondary"
@@ -110,7 +108,7 @@ const TaskDetailPage: React.FC = () => {
               title: task.title,
               description: task.description,
               is_done: task.is_done,
-              scheduled_for: task.scheduled_for
+              scheduled_for: task.scheduled_for,
             }}
             onSubmit={async (data) => {
               await editTask(task.id, data);
@@ -121,21 +119,29 @@ const TaskDetailPage: React.FC = () => {
         ) : (
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
-              <span className={`inline-block w-3 h-3 rounded-full ${task.is_done ? 'bg-green-500' : 'bg-yellow-500'}`} />
+              <span
+                className={`inline-block w-3 h-3 rounded-full ${task.is_done ? 'bg-green-500' : 'bg-yellow-500'}`}
+              />
               <h1 className="text-2xl font-bold text-gray-900">{task.title}</h1>
             </div>
 
             {task.description && (
               <div>
                 <h3 className="font-medium text-gray-700 mb-2">Description</h3>
-                <p className="text-gray-600 whitespace-pre-wrap">{task.description}</p>
+                <p className="text-gray-600 whitespace-pre-wrap">
+                  {task.description}
+                </p>
               </div>
             )}
 
             {task.scheduled_for && (
               <div>
-                <h3 className="font-medium text-gray-700 mb-2">Scheduled For</h3>
-                <p className="text-gray-600">{new Date(task.scheduled_for).toLocaleDateString()}</p>
+                <h3 className="font-medium text-gray-700 mb-2">
+                  Scheduled For
+                </h3>
+                <p className="text-gray-600">
+                  {new Date(task.scheduled_for).toLocaleDateString()}
+                </p>
               </div>
             )}
 
@@ -143,7 +149,7 @@ const TaskDetailPage: React.FC = () => {
               <div>
                 <h3 className="font-medium text-gray-700 mb-2">Tags</h3>
                 <div className="flex flex-wrap gap-2">
-                  {task.tags.map(tag => (
+                  {task.tags.map((tag) => (
                     <span
                       key={tag.id}
                       className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"

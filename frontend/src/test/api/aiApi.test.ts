@@ -23,16 +23,16 @@ describe('AI API', () => {
       // Create a task first
       const taskData = createMockTask({
         title: 'Buy groceries',
-        description: 'Need to buy milk, bread, and eggs from the store'
+        description: 'Need to buy milk, bread, and eggs from the store',
       });
       createdTask = await tasksApi.createTask(taskData);
-      
+
       // Apply smart tagging
       const taggedTask = await aiApi.smartTag(createdTask.id);
-      
+
       validateTaskResponse(taggedTask);
       expect(taggedTask.id).toBe(createdTask.id);
-      
+
       // The AI should have added tags based on the task content
       // Note: This test depends on your AI service working
       console.log('Smart tagged task:', taggedTask);

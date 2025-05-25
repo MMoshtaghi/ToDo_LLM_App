@@ -9,7 +9,11 @@ interface TagFormProps {
   onCancel: () => void;
 }
 
-const TagForm: React.FC<TagFormProps> = ({ initialData, onSubmit, onCancel }) => {
+const TagForm: React.FC<TagFormProps> = ({
+  initialData,
+  onSubmit,
+  onCancel,
+}) => {
   const [tag, setTag] = useState(initialData?.tag || '');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -39,11 +43,7 @@ const TagForm: React.FC<TagFormProps> = ({ initialData, onSubmit, onCancel }) =>
         <Button variant="secondary" onClick={onCancel} type="button">
           Cancel
         </Button>
-        <Button 
-          type="submit" 
-          loading={isSubmitting} 
-          disabled={!tag.trim()}
-        >
+        <Button type="submit" loading={isSubmitting} disabled={!tag.trim()}>
           Save Tag
         </Button>
       </div>

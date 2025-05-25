@@ -22,7 +22,7 @@ const TaskList: React.FC<TaskListProps> = ({
   onEdit,
   onTag,
   onUntag,
-  onSmartTag
+  onSmartTag,
 }) => {
   // Empty State Handling
   // - If there are no tasks, show a friendly message.
@@ -31,19 +31,21 @@ const TaskList: React.FC<TaskListProps> = ({
     return (
       <div className="text-center py-12">
         <p className="text-gray-500 text-lg">No tasks found</p>
-        <p className="text-gray-400 text-sm">Create your first task to get started!</p>
+        <p className="text-gray-400 text-sm">
+          Create your first task to get started!
+        </p>
       </div>
     );
   }
 
-// Rendering the Task List
-// - If there are tasks, render a list of `TaskCard` components.
-//   - `.map()` iterates over each task and renders a `TaskCard` for it.
-// - `key={task.id}` is a React best practice for lists to help React track items.
-// - All handler functions are passed down to each `TaskCard` for interaction.
+  // Rendering the Task List
+  // - If there are tasks, render a list of `TaskCard` components.
+  //   - `.map()` iterates over each task and renders a `TaskCard` for it.
+  // - `key={task.id}` is a React best practice for lists to help React track items.
+  // - All handler functions are passed down to each `TaskCard` for interaction.
   return (
     <div className="space-y-4">
-      {tasks.map(task => (
+      {tasks.map((task) => (
         <TaskCard
           key={task.id}
           task={task}

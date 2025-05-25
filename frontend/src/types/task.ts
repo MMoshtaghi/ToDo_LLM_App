@@ -1,4 +1,4 @@
-import type { TagResponse } from "./tag";
+import type { TagResponse } from './tag';
 
 export interface TaskCreate {
   title: string;

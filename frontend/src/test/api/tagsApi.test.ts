@@ -1,6 +1,11 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { tagsApi } from '@/api/tagsApi';
-import { createMockTag, createMockTagUpdate, validateTagResponse, cleanupTestData } from '../utils/testHelpers';
+import {
+  createMockTag,
+  createMockTagUpdate,
+  validateTagResponse,
+  cleanupTestData,
+} from '../utils/testHelpers';
 import { TagResponseWithTasks } from '@/types/tag';
 
 describe('Tags API', () => {
@@ -21,9 +26,9 @@ describe('Tags API', () => {
   describe('POST /tags/', () => {
     it('should create a new tag', async () => {
       const tagData = createMockTag({ tag: 'api-test-tag' });
-      
+
       createdTag = await tagsApi.createTag(tagData);
-      
+
       validateTagResponse(createdTag);
       expect(createdTag.tag).toBe(tagData.tag);
     });
@@ -32,10 +37,10 @@ describe('Tags API', () => {
   describe('GET /tags/tag_page', () => {
     it('should fetch tag page', async () => {
       const tags = await tagsApi.getTagPage();
-      
+
       expect(Array.isArray(tags)).toBe(true);
       expect(tags.length).toBeLessThanOrEqual(10);
-      
+
       if (tags.length > 0) {
         validateTagResponse(tags[0]);
       }
@@ -46,9 +51,9 @@ describe('Tags API', () => {
     it('should fetch a specific tag', async () => {
       const tagData = createMockTag({ tag: 'fetch-test-tag' });
       createdTag = await tagsApi.createTag(tagData);
-      
+
       const fetchedTag = await tagsApi.getTag(createdTag.id);
-      
+
       validateTagResponse(fetchedTag);
       expect(fetchedTag.id).toBe(createdTag.id);
     });
@@ -58,10 +63,10 @@ describe('Tags API', () => {
     it('should update tag name', async () => {
       const tagData = createMockTag({ tag: 'original-tag' });
       createdTag = await tagsApi.createTag(tagData);
-      
-      const updatedData = createMockTagUpdate( {tag: 'updated-tag'} )
+
+      const updatedData = createMockTagUpdate({ tag: 'updated-tag' });
       const updatedTag = await tagsApi.editTag(createdTag.id, updatedData);
-      
+
       validateTagResponse(updatedTag);
       expect(updatedTag.tag).toBe('updated-tag');
     });
@@ -71,9 +76,9 @@ describe('Tags API', () => {
     it('should delete a tag', async () => {
       const tagData = createMockTag({ tag: 'delete-test-tag' });
       createdTag = await tagsApi.createTag(tagData);
-      
+
       await tagsApi.deleteTag(createdTag.id);
-      
+
       await expect(tagsApi.getTag(createdTag.id)).rejects.toThrow();
       createdTag = null;
     });

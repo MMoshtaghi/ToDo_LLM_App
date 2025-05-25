@@ -3,7 +3,9 @@ import { TagCreate, TagResponseWithTasks, TagUpdate } from '@/types/tag';
 import { expect } from 'vitest';
 
 // Test data factories
-export const createMockTask = (overrides: Partial<TaskCreate> = {}): TaskCreate => ({
+export const createMockTask = (
+  overrides: Partial<TaskCreate> = {}
+): TaskCreate => ({
   title: 'Test Task',
   description: 'Test Description',
   is_done: false,
@@ -11,7 +13,9 @@ export const createMockTask = (overrides: Partial<TaskCreate> = {}): TaskCreate 
   ...overrides,
 });
 
-export const createMockTaskUpdate = (overrides: Partial<TaskUpdate> = {}): TaskUpdate => ({
+export const createMockTaskUpdate = (
+  overrides: Partial<TaskUpdate> = {}
+): TaskUpdate => ({
   title: 'Updated Title',
   description: 'Updated Description',
   is_done: true,
@@ -19,19 +23,23 @@ export const createMockTaskUpdate = (overrides: Partial<TaskUpdate> = {}): TaskU
   ...overrides,
 });
 
-export const createMockTag = (overrides: Partial<TagCreate> = {}): TagCreate => ({
+export const createMockTag = (
+  overrides: Partial<TagCreate> = {}
+): TagCreate => ({
   tag: 'test-tag',
   ...overrides,
 });
 
-export const createMockTagUpdate = (overrides: Partial<TagUpdate> = {}): TagUpdate => ({
+export const createMockTagUpdate = (
+  overrides: Partial<TagUpdate> = {}
+): TagUpdate => ({
   tag: 'Updated-tag',
   ...overrides,
 });
 
 // Helper to wait for async operations
-export const waitFor = (ms: number): Promise<void> => 
-  new Promise(resolve => setTimeout(resolve, ms));
+export const waitFor = (ms: number): Promise<void> =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 
 // API response validators
 export const validateTaskResponse = (task: TaskResponseWithTags): void => {
@@ -54,14 +62,14 @@ export const validateTagResponse = (tag: TagResponseWithTasks): void => {
 export const cleanupTestData = {
   tasks: [] as number[],
   tags: [] as number[],
-  
+
   addTask: (id: number) => cleanupTestData.tasks.push(id),
   addTag: (id: number) => cleanupTestData.tags.push(id),
-  
+
   async cleanup() {
     // This would be used to clean up test data after tests
     // For now, just reset the arrays
     cleanupTestData.tasks.length = 0;
     cleanupTestData.tags.length = 0;
-  }
+  },
 };

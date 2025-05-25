@@ -20,11 +20,11 @@ const TagSelector: React.FC<TagSelectorProps> = ({
   taskId,
   currentTags,
   onTag,
-  onClose
+  onClose,
 }) => {
-    // tags: All available tags (from the custom hook).
-    // searchTerm: The current search input value.
-    // filteredTags: Tags that match the search and are not already assigned.
+  // tags: All available tags (from the custom hook).
+  // searchTerm: The current search input value.
+  // filteredTags: Tags that match the search and are not already assigned.
   const { tags } = useTags();
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredTags, setFilteredTags] = useState<TagResponse[]>([]);
@@ -35,11 +35,13 @@ const TagSelector: React.FC<TagSelectorProps> = ({
   // - availableTags: Tags not already assigned and matching the search term.
   // - setFilteredTags: Updates the filtered list for display.
   useEffect(() => {
-    const currentTagIds = new Set(currentTags.map(tag => tag.id));
+    const currentTagIds = new Set(currentTags.map((tag) => tag.id));
     const availableTags = tags
-      .filter(tag => !currentTagIds.has(tag.id))
-      .filter(tag => tag.tag.toLowerCase().includes(searchTerm.toLowerCase()));
-    
+      .filter((tag) => !currentTagIds.has(tag.id))
+      .filter((tag) =>
+        tag.tag.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
     setFilteredTags(availableTags);
   }, [tags, currentTags, searchTerm]);
 
@@ -49,12 +51,11 @@ const TagSelector: React.FC<TagSelectorProps> = ({
     await onTag(taskId, tagId);
     onClose();
   };
-  
+
   // Rendered UI
   return (
     <div className="bg-gray-50 rounded-lg p-3 border">
-        
-        {/* Header: Shows "Add Tag" and a close button. */}
+      {/* Header: Shows "Add Tag" and a close button. */}
       <div className="flex justify-between items-center mb-2">
         <h4 className="font-medium text-gray-700">Add Tag</h4>
         <Button
@@ -68,7 +69,7 @@ const TagSelector: React.FC<TagSelectorProps> = ({
         </Button>
       </div>
 
-        {/* Search Input: Lets the user filter tags by typing. */}
+      {/* Search Input: Lets the user filter tags by typing. */}
       <Input
         type="text"
         placeholder="Search tags..."
@@ -79,7 +80,7 @@ const TagSelector: React.FC<TagSelectorProps> = ({
         aria-label="Search tags"
       />
 
-        {/* Tag List:
+      {/* Tag List:
         - If no tags match, shows a message.
         - Otherwise, shows a button for each tag. Clicking adds the tag to the task. */}
       <div className="max-h-32 overflow-y-auto">
@@ -89,7 +90,7 @@ const TagSelector: React.FC<TagSelectorProps> = ({
           </p>
         ) : (
           <div className="space-y-1">
-            {filteredTags.map(tag => (
+            {filteredTags.map((tag) => (
               <Button
                 key={tag.id}
                 variant="ghost"

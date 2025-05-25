@@ -1,8 +1,11 @@
-__pycache__
+# Cache
+__pycache__/
+.ruff_cache/
+.pytest_cache/
 
 # Env
 .venv/
 .env
 
 # Database
-data/
+todo.db

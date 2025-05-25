@@ -1,6 +1,12 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { tasksApi } from '@/api/tasksApi';
-import { createMockTask, createMockTaskUpdate, createMockTag, validateTaskResponse, cleanupTestData } from '../utils/testHelpers';
+import {
+  createMockTask,
+  createMockTaskUpdate,
+  createMockTag,
+  validateTaskResponse,
+  cleanupTestData,
+} from '../utils/testHelpers';
 import { TaskResponseWithTags } from '@/types/task';
 import { tagsApi } from '@/api/tagsApi';
 
@@ -24,11 +30,11 @@ describe('Tasks API', () => {
     it('should create a new task', async () => {
       const taskData = createMockTask({
         title: 'API Test Task',
-        description: 'Created via API test'
+        description: 'Created via API test',
       });
 
       createdTask = await tasksApi.createTask(taskData);
-      
+
       validateTaskResponse(createdTask);
       expect(createdTask.title).toBe(taskData.title);
       expect(createdTask.description).toBe(taskData.description);
@@ -37,11 +43,11 @@ describe('Tasks API', () => {
 
     it('should create task with minimal data', async () => {
       const taskData = createMockTask({
-        title: 'Minimal Task'
+        title: 'Minimal Task',
       });
 
       createdTask = await tasksApi.createTask(taskData);
-      
+
       validateTaskResponse(createdTask);
       expect(createdTask.title).toBe('Minimal Task');
     });
@@ -50,10 +56,10 @@ describe('Tasks API', () => {
   describe('GET /tasks/task_page', () => {
     it('should fetch task page with default pagination', async () => {
       const tasks = await tasksApi.getTaskPage();
-      
+
       expect(Array.isArray(tasks)).toBe(true);
       expect(tasks.length).toBeLessThanOrEqual(10); // Default limit
-      
+
       if (tasks.length > 0) {
         validateTaskResponse(tasks[0]);
       }
@@ -61,7 +67,7 @@ describe('Tasks API', () => {
 
     it('should fetch task page with custom pagination', async () => {
       const tasks = await tasksApi.getTaskPage(0, 5);
-      
+
       expect(Array.isArray(tasks)).toBe(true);
       expect(tasks.length).toBeLessThanOrEqual(5);
     });
@@ -72,10 +78,10 @@ describe('Tasks API', () => {
       // First create a task
       const taskData = createMockTask({ title: 'Task to Fetch' });
       createdTask = await tasksApi.createTask(taskData);
-      
+
       // Then fetch it
       const fetchedTask = await tasksApi.getTask(createdTask.id);
-      
+
       validateTaskResponse(fetchedTask);
       expect(fetchedTask.id).toBe(createdTask.id);
       expect(fetchedTask.title).toBe(taskData.title);
@@ -91,11 +97,11 @@ describe('Tasks API', () => {
       // Create task
       const taskData = createMockTask({ title: 'Original Title' });
       createdTask = await tasksApi.createTask(taskData);
-      
+
       // Update task
       const updateData = createMockTaskUpdate({ title: 'Updated Title' });
       const updatedTask = await tasksApi.editTask(createdTask.id, updateData);
-      
+
       validateTaskResponse(updatedTask);
       expect(updatedTask.title).toBe('Updated Title');
       expect(updatedTask.id).toBe(createdTask.id);
@@ -105,11 +111,11 @@ describe('Tasks API', () => {
       // Create task
       const taskData = createMockTask({ title: 'Task to Complete' });
       createdTask = await tasksApi.createTask(taskData);
-      
+
       // Mark as done
       const updateData = createMockTaskUpdate({ is_done: true });
       const updatedTask = await tasksApi.editTask(createdTask.id, updateData);
-      
+
       validateTaskResponse(updatedTask);
       expect(updatedTask.is_done).toBe(true);
     });
@@ -120,13 +126,13 @@ describe('Tasks API', () => {
       // Create task
       const taskData = createMockTask({ title: 'Task to Delete' });
       createdTask = await tasksApi.createTask(taskData);
-      
+
       // Delete task
       await tasksApi.deleteTask(createdTask.id);
-      
+
       // Verify it's deleted
       await expect(tasksApi.getTask(createdTask.id)).rejects.toThrow();
-      
+
       createdTask = null; // Prevent cleanup attempt
     });
   });
@@ -145,12 +151,19 @@ describe('Tasks API', () => {
       const taggedTask = await tasksApi.tagTask(createdTask.id, createdTag.id);
 
       validateTaskResponse(taggedTask);
-      expect(taggedTask.tags.some(tag => tag.id === createdTag.id)).toBe(true);
+      expect(taggedTask.tags.some((tag) => tag.id === createdTag.id)).toBe(
+        true
+      );
 
       // Untag the task
-      const untaggedTask = await tasksApi.untagTask(createdTask.id, createdTag.id);
+      const untaggedTask = await tasksApi.untagTask(
+        createdTask.id,
+        createdTag.id
+      );
       validateTaskResponse(untaggedTask);
-      expect(untaggedTask.tags.some(tag => tag.id === createdTag.id)).toBe(false);
+      expect(untaggedTask.tags.some((tag) => tag.id === createdTag.id)).toBe(
+        false
+      );
     });
   });
 });

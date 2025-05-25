@@ -19,7 +19,7 @@ const TagCard: React.FC<TagCardProps> = ({ tag, onDelete, onEdit }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  
+
   // Delete Handler with Modal
   const handleDelete = async () => {
     setDeleting(true);
@@ -27,10 +27,10 @@ const TagCard: React.FC<TagCardProps> = ({ tag, onDelete, onEdit }) => {
     setDeleting(false);
     setShowDeleteModal(false);
   };
-  
+
   // If editing: Show the TagForm for editing the tag.
   // onSubmit: Calls onEdit with new data, then exits edit mode.
-  // onCancel: Exits edit mode without saving.   
+  // onCancel: Exits edit mode without saving.
   if (isEditing) {
     return (
       <div className="bg-white rounded-lg shadow-sm border p-4">
@@ -45,11 +45,11 @@ const TagCard: React.FC<TagCardProps> = ({ tag, onDelete, onEdit }) => {
       </div>
     );
   }
-  
+
   // Display Mode
   return (
     <div className="bg-white rounded-lg shadow-sm border p-4">
-        {/* Tag Display: Shows the tag name and two buttons:
+      {/* Tag Display: Shows the tag name and two buttons:
             Edit: Switches to edit mode.
             Delete: Calls handleDelete. */}
       <div className="flex justify-between items-start mb-3">
@@ -77,8 +77,8 @@ const TagCard: React.FC<TagCardProps> = ({ tag, onDelete, onEdit }) => {
           </Button>
         </div>
       </div>
-        
-        {/* Task Count and Recent Tasks
+
+      {/* Task Count and Recent Tasks
         - Task Count: Shows how many tasks are linked to the tag.
         - Recent Tasks: Lists up to 3 recent tasks. If there are more, shows a message like "... and 2 more".
         - Best practice: Avoids overwhelming the user with too much info.*/}
@@ -91,7 +91,7 @@ const TagCard: React.FC<TagCardProps> = ({ tag, onDelete, onEdit }) => {
           <div className="space-y-1">
             <p className="font-medium">Recent tasks:</p>
             <ul className="space-y-1">
-              {tag.tasks.slice(0, 3).map(task => (
+              {tag.tasks.slice(0, 3).map((task) => (
                 <li key={task.id} className="text-xs text-gray-500 truncate">
                   • {task.title}
                 </li>
@@ -114,8 +114,9 @@ const TagCard: React.FC<TagCardProps> = ({ tag, onDelete, onEdit }) => {
       >
         <div className="space-y-4">
           <p>
-            Are you sure you want to delete the tag <span className="font-semibold">"{tag.tag}"</span>?
-            This action cannot be undone.
+            Are you sure you want to delete the tag{' '}
+            <span className="font-semibold">"{tag.tag}"</span>? This action
+            cannot be undone.
           </p>
           <div className="flex justify-end space-x-2">
             <Button
@@ -125,11 +126,7 @@ const TagCard: React.FC<TagCardProps> = ({ tag, onDelete, onEdit }) => {
             >
               Cancel
             </Button>
-            <Button
-              variant="danger"
-              onClick={handleDelete}
-              loading={deleting}
-            >
+            <Button variant="danger" onClick={handleDelete} loading={deleting}>
               Delete
             </Button>
           </div>

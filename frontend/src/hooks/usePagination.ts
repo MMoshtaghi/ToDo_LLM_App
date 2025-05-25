@@ -10,8 +10,8 @@ export const usePagination = (
 
   const maxPage = Math.max(Math.ceil(totalCount / limit) - 1, 0);
 
-  const nextPage = () => setPage(prev => (prev < maxPage ? prev + 1 : prev));
-  const prevPage = () => setPage(prev => Math.max(prev - 1, 0));
+  const nextPage = () => setPage((prev) => (prev < maxPage ? prev + 1 : prev));
+  const prevPage = () => setPage((prev) => Math.max(prev - 1, 0));
   const resetPage = () => setPage(0);
 
   return {

@@ -17,12 +17,18 @@ interface TaskFormProps {
 // Functional Component
 // Receives props as defined above.
 // The type `React.FC<TaskFormProps>` ensures type safety and good editor support.
-const TaskForm: React.FC<TaskFormProps> = ({ initialData, onSubmit, onCancel }) => {
+const TaskForm: React.FC<TaskFormProps> = ({
+  initialData,
+  onSubmit,
+  onCancel,
+}) => {
   // State Variables:
   // title, description, isDone, scheduledFor: Hold the current values of the form fields. Initialized from initialData if provided.
   // isSubmitting: Tracks if the form is currently submitting (to disable the button and show feedback).
   const [title, setTitle] = useState(initialData?.title || '');
-  const [description, setDescription] = useState(initialData?.description || '');
+  const [description, setDescription] = useState(
+    initialData?.description || ''
+  );
   const [isDone, setIsDone] = useState(initialData?.is_done || false);
   const [scheduledFor, setScheduledFor] = useState(
     initialData?.scheduled_for ? initialData.scheduled_for.split('T')[0] : ''
@@ -45,7 +51,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ initialData, onSubmit, onCancel }) 
         title: title.trim(),
         description: description.trim() || null,
         is_done: isDone,
-        scheduled_for: scheduledFor || null
+        scheduled_for: scheduledFor || null,
       });
     } finally {
       setIsSubmitting(false);
@@ -65,7 +71,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ initialData, onSubmit, onCancel }) 
         placeholder="Enter task title"
         required
       />
-      
+
       {/* Description Input:
       Controlled textarea for optional description. */}
       <Textarea
@@ -75,7 +81,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ initialData, onSubmit, onCancel }) 
         placeholder="Enter task description"
         rows={3}
       />
-      
+
       {/* Scheduled Date Input:
       - Controlled date input for scheduling the task.
       UI Element:
@@ -88,8 +94,8 @@ const TaskForm: React.FC<TaskFormProps> = ({ initialData, onSubmit, onCancel }) 
         label="Scheduled For"
         value={scheduledFor}
         onChange={(e) => setScheduledFor(e.target.value)}
-      />  
-      
+      />
+
       {/* Completed Checkbox:
       Lets the user mark the task as done. */}
       <div className="flex items-center">
@@ -104,15 +110,11 @@ const TaskForm: React.FC<TaskFormProps> = ({ initialData, onSubmit, onCancel }) 
           Mark as completed
         </label>
       </div>
-      
+
       {/* Action Buttons: */}
       <div className="flex justify-end space-x-3 pt-4">
         {/* Cancel: Calls onCancel when clicked. */}
-        <Button
-          type="button"
-          variant="secondary"
-          onClick={onCancel}
-        >
+        <Button type="button" variant="secondary" onClick={onCancel}>
           Cancel
         </Button>
         {/* Save Task: Submits the form. Disabled if submitting or title is empty. Shows loading text if submitting. */}

@@ -24,15 +24,14 @@ const TaskCard: React.FC<TaskCardProps> = ({
   onEdit,
   onTag,
   onUntag,
-  onSmartTag
+  onSmartTag,
 }) => {
-  
   // Controls visibility of the tag selector UI.
   const [showTagSelector, setShowTagSelector] = useState(false);
-  
+
   // Indicates if the smart tagging process is running (for loading state).
   const [isSmartTagging, setIsSmartTagging] = useState(false);
-  
+
   // Controls visibility of the Delete UI.
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -74,7 +73,9 @@ const TaskCard: React.FC<TaskCardProps> = ({
                 ? 'bg-green-500 border-green-500 text-white'
                 : 'border-gray-300 hover:border-gray-400'
             }`}
-            aria-label={task.is_done ? 'Mark as incomplete' : 'Mark as complete'}
+            aria-label={
+              task.is_done ? 'Mark as incomplete' : 'Mark as complete'
+            }
             variant="ghost"
             size="sm"
           >
@@ -93,8 +94,8 @@ const TaskCard: React.FC<TaskCardProps> = ({
             >
               {task.title}
             </Link>
-              
-              {/* Task Description:
+
+            {/* Task Description:
                 Only shown if present.
                 Truncated to two lines for neatness. */}
             {task.description && (
@@ -117,7 +118,7 @@ const TaskCard: React.FC<TaskCardProps> = ({
               Each tag has a remove ("×") button to untag it. */}
             {task.tags && task.tags.length > 0 && (
               <div className="flex flex-wrap gap-1 mt-2">
-                {task.tags.map(tag => (
+                {task.tags.map((tag) => (
                   <span
                     key={tag.id}
                     className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs"
@@ -152,8 +153,8 @@ const TaskCard: React.FC<TaskCardProps> = ({
             )}
           </div>
         </div>
-            
-            {/* Action Buttons: */}
+
+        {/* Action Buttons: */}
         <div className="flex items-center space-x-2">
           {/* Add Tag: Toggles the tag selector. */}
           <Button
@@ -213,11 +214,7 @@ const TaskCard: React.FC<TaskCardProps> = ({
             >
               Cancel
             </Button>
-            <Button
-              onClick={handleDelete}
-              variant="danger"
-              size="sm"
-            >
+            <Button onClick={handleDelete} variant="danger" size="sm">
               Delete
             </Button>
           </div>
