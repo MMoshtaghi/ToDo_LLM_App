@@ -58,9 +58,13 @@ The project has a modular design with easy navigation and clean separation of co
 
 After cloning the repo :
 
-### Docker with nginx (TODO!)
-Not ready yet.
-For now use the other method please :)
+### Docker and Nginx 
+Note: For development, we **allow any site to make CORS requests**, which must NOT be used for production
+
+```bash
+docker compose --env-file ./backend/.env --env-file ./frontend/.env up -d --build
+```
+Visit http://localhost for the UI
 
 ### Without Docker
 - Backend

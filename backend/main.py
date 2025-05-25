@@ -16,15 +16,19 @@ app = FastAPI(title="Todo LLM App", lifespan=lifespan)
 app.include_router(api_router)
 
 origins = [
-    "http://localhost:5173",  # or whatever your frontend port is
-    "http://localhost:3000",  # add more if needed
+    "http://localhost:5173",    # Vite dev server
+    "http://localhost:3000",    # React dev server
+    "http://localhost:80"       # Nginx served frontend
+    "http://localhost",         # Nginx without explicit port
+    # Add your production domain when deploying
+    # "https://yourdomain.com"
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # or ["*"] to allow all (not recommended for production)
+    allow_origins=["*"],  # or ["*"] to allow all (not recommended for production)
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH"],
     allow_headers=["*"],
 )
 
