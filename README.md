@@ -1,7 +1,8 @@
 
 
+# Smart ToDo List Web APP
 
-# Service Features
+## Service Features
 - Core Features:
     - Add, edit, delete, mark-as-done, tag, untag tasks.
     - Local Database with SQLite;
@@ -19,11 +20,11 @@
 ![ToDoAppUI.png](Assets/ToDoAppUI.png)
 
 
-# Key Design and Architectural Choices
+## Key Design and Architectural Choices
 
 The project has a modular design with easy navigation and clean separation of concerns.
 
-## LLM:
+### LLM:
 - Prompt Strategy:
     - Markdown Prompt
     - Multiple examples, including a Prompt Injection example to avoid
@@ -31,11 +32,11 @@ The project has a modular design with easy navigation and clean separation of co
 - Graceful API or connection error handling
 - TODO: Switch to a different model or provider when an LLM API is unavailable. (already support 2 LLMs, but yet to support each other)
 
-## Database
+### Database
 - Many-to-Many relationship between tasks and tags
 
 
-# Tech stack
+## Tech stack
 - Python Backend:
     - Project manager: uv
     - LLM: LangChain
@@ -53,13 +54,13 @@ The project has a modular design with easy navigation and clean separation of co
     - Format: Prettier
 
 
-# How to use it?
-## Production Mode (TODO!)
+## How to use it?
+### Production Mode (TODO!)
 Check out [DockerUsageGuide.md](./DockerUsageGuide.md). But not ready yet.
 For now use the Dev Mode please :)
 
-## Dev Mode (without Docker)
-### Backend
+### Dev Mode (without Docker)
+- Backend
 
 ```bash
 cd backend
@@ -72,7 +73,7 @@ uv run fastapi dev main.py
 ```
 Go to http://127.0.0.1:8000/docs to check the API docs.
 
-### Frontend
+- Frontend
 ```bash
 cd frontend
 
