@@ -4,7 +4,7 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: ../docker/backend/Dockerfile
+      dockerfile: ../docker/backend/Dockerfile.prod
     container_name: taskflow-backend
     environment:
       - DATABASE_URL=sqlite:///data/todo.db
@@ -25,7 +25,7 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: ../docker/frontend/Dockerfile
+      dockerfile: ../docker/frontend/Dockerfile.prod
       args:
         - VITE_API_URL=http://localhost/api
         - VITE_APP_NAME=TaskFlow

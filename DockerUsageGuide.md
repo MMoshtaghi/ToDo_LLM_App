@@ -2,25 +2,11 @@
 
 This guide provides instructions for deploying the TaskFlow application using Docker and Docker Compose.
 
-## Prerequisites
-
-- Docker Engine 20.10.0 or higher
-- Docker Compose 2.0.0 or higher
-- At least 2GB of available RAM
-- At least 1GB of free disk space
-
 ## Quick Start
 
 1. **Clone the repository and navigate to the project root**
 
-2. **Set up environment variables**
-   ```bash
-   # Copy the environment template
-   cp .env.example .env
-   
-   # Edit the .env file with your API keys
-   nano .env
-   ```
+2. **Set up environment variables for the backend and the frontend using the .env.example files**
 
 3. **Build and start the application**
    ```bash
@@ -35,46 +21,6 @@ This guide provides instructions for deploying the TaskFlow application using Do
    - Frontend: http://localhost
    - Backend API: http://localhost/api
    - API Documentation: http://localhost/api/docs
-
-## File Structure
-
-Create the following Docker-related files in your project:
-
-```
-project-root/
-├── docker/
-│   ├── backend/
-│   │   ├── Dockerfile
-│   │   └── .dockerignore
-│   └── frontend/
-│       ├── Dockerfile
-│       ├── .dockerignore
-│       └── nginx.conf
-├── compose.yml
-├── .env
-└── .env.example
-```
-
-## Environment Configuration
-
-### Required Environment Variables
-
-```bash
-# LLM API Keys (at least one required)
-GEMINI_API_KEY=your_gemini_api_key_here
-OPENAI_API_KEY=your_openai_api_key_here
-```
-
-### Optional Environment Variables
-
-```bash
-# Custom ports (defaults shown)
-FRONTEND_PORT=80
-BACKEND_PORT=8000
-
-# App customization
-VITE_APP_NAME=TaskFlow
-```
 
 ## Docker Commands
 

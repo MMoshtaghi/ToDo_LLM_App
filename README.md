@@ -55,12 +55,17 @@ The project has a modular design with easy navigation and clean separation of co
 
 
 ## How to use it?
-### Production Mode (TODO!)
-Check out [DockerUsageGuide.md](./DockerUsageGuide.md). But not ready yet.
-For now use the Dev Mode please :)
 
-### Dev Mode (without Docker)
+After cloning the repo :
+
+### Docker with nginx (TODO!)
+Not ready yet.
+For now use the other method please :)
+
+### Without Docker
 - Backend
+    - Install [uv](https://docs.astral.sh/uv/#highlights) first, if you haven't already. (you'll thank me later!)
+    - Then:
 
 ```bash
 cd backend

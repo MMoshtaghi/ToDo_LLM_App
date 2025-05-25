@@ -59,6 +59,9 @@ data/*.db-journal
 data/*.db-wal
 data/*.db-shm
 
+# ruff
+.ruff_cache/
+
 # Logs
 *.log
 
