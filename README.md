@@ -56,7 +56,11 @@ The project has a modular design with easy navigation and clean separation of co
 
 ## How to use it?
 
-After cloning the repo :
+1. **Clone the repository and navigate to the project root**
+
+2. **Set up environment variables for the backend and the frontend using the .env.example files**
+
+3. **Build and start the application**:
 
 ### Docker and Nginx 
 Note: For development, we **allow any site to make CORS requests**, which must NOT be used for production

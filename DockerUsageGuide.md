@@ -1,27 +1,5 @@
 # Docker Deployment Guide
 
-This guide provides instructions for deploying the TaskFlow application using Docker and Docker Compose.
-
-## Quick Start
-
-1. **Clone the repository and navigate to the project root**
-
-2. **Set up environment variables for the backend and the frontend using the .env.example files**
-
-3. **Build and start the application**
-   ```bash
-   # Build and start all services
-   docker compose up -d --build
-   
-   # Or for development with logs
-   docker compose up --build
-   ```
-
-4. **Access the application**
-   - Frontend: http://localhost
-   - Backend API: http://localhost/api
-   - API Documentation: http://localhost/api/docs
-
 ## Docker Commands
 
 ### Basic Operations
