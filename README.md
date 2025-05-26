@@ -7,6 +7,8 @@
     - Add, edit, delete, mark-as-done, tag, untag tasks.
     - Local Database with SQLite;
     - No user authentication
+    - Scalable by design! we can simply add more services, more attributes for tasks and tags, etc without re-structuring the architecture.
+    - Clean code with one-line API functions 
 
 - LLM Feature:
     - Smart Tagging (labeling) : The LLM assigns tags based on the task description.
