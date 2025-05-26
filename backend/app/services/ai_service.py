@@ -33,37 +33,34 @@ class SmartTagResult(BaseModel):
 #     tags: list[SmartTagResult]
 
 
-def get_llm(llm_name: str):
-    if llm_name in settings.VALID_GEMINI_MODELS:
+def get_llm():
+    if settings.GEMINI_API_KEY != "":
         from langchain_google_genai import ChatGoogleGenerativeAI
 
         # For now we use the only one model
         return ChatGoogleGenerativeAI(
-            model=llm_name, google_api_key=SecretStr(settings.GEMINI_API_KEY)
+            model="gemini-2.0-flash", google_api_key=SecretStr(settings.GEMINI_API_KEY)
         ).with_structured_output(schema=SmartTagResult)
     
-    elif llm_name in settings.VALID_OPENAI_MODELS:
+    elif settings.OPENAI_API_KEY != "":
         from langchain_openai import ChatOpenAI
 
         return ChatOpenAI(
-            model=llm_name, api_key=SecretStr(settings.OPENAI_API_KEY)
+            model="gpt-4o", api_key=SecretStr(settings.OPENAI_API_KEY)
         ).with_structured_output(schema=SmartTagResult, method="json_schema")
     else:
-        raise ValueError(
-            f"Invalid model: {llm_name}",
-            f"Valid options are: {settings.VALID_GEMINI_MODELS}, {settings.VALID_OPENAI_MODELS}",
-        )
+        raise ValueError("""No API Key for either "gemini-2.0-flash" or "gpt4-o" is provided""")
 
 
-def call_llm(llm_name: str, prompt: str) -> SmartTagResult:
-    llm = get_llm(llm_name)
+def call_llm(prompt: str) -> SmartTagResult:
+    llm = get_llm()
     llm_response = llm.invoke(prompt)
     return SmartTagResult.model_validate(llm_response)
 
 
 class AIService:
     def __init__(self):
-        self.llm_name = "gemini-2.0-flash"
+        pass
 
     def text_to_task(self, text: str):
         # TODO How to reliably convert relative time in natural language (e.g. Next Monday, 2nd Monday of next month) to datetime? CodeAct?
@@ -142,7 +139,7 @@ class AIService:
             )
 
             # Isolate the llm call to be able to mock it for tests
-            result = call_llm(self.llm_name, prompt)
+            result = call_llm(prompt)
 
             # check if the tag (case insensitive) is already in available_tags and current_tags
             if any(tag.lower() == result.tag_name.lower() for tag in current_tags):

@@ -12,7 +12,7 @@
 
 - LLM Feature:
     - Smart Tagging (labeling) : The LLM assigns tags based on the task description.
-    - Support for Gemini and GPT4-o
+    - For now, it supports Gemini (only "gemini-2.0-flash") and OpaenAI (only "gpt-4o") models. (If you provide both API keys, then we use Gemini)
 
 - Frontend Features:
     - No blocking error
