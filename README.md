@@ -64,13 +64,19 @@ The project has a modular design with easy navigation and clean separation of co
 
 3. **Build and start the application**:
 
-### Docker and Nginx 
-Note: For development, we **allow any site to make CORS requests**, which must NOT be used for production
+### Docker 
+Note: For development, we **allow any site to make CORS requests**, which must NOT be used for production.
 
 ```bash
-docker compose --env-file ./backend/.env --env-file ./frontend/.env up -d --build
+# Dev mode (use bind mounts for hot reloading without requiring rebuilds on code changes.)
+./scripts/dev.sh
+
+# Prod mode with Nginx
+./scripts/prod.sh
 ```
 Visit http://localhost for the UI
+
+Note: For the sake of security and flexibility, secrets should be injected at runtime, not baked into images.
 
 ### Without Docker
 - Backend

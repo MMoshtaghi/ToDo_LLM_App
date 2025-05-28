@@ -1,7 +1,41 @@
-# Use Python 3.12 slim image for smaller size
+# Use Python 3.12 slim image
 FROM python:3.12-slim
 
 # Set working directory
 WORKDIR /app
 
+# Install system dependencies including development tools
+RUN apt-get update && apt-get install -y \
+    gcc \
+    curl \
+    git \
+    vim \
+    && rm -rf /var/lib/apt/lists/*
 
+# Install uv
+RUN pip install uv
+
+# Copy dependency files first for better layer caching
+COPY pyproject.toml uv.lock ./
+
+# Install dependencies including dev dependencies
+RUN uv sync --frozen --all-extras
+
+# Create data directory for SQLite with proper permissions
+RUN mkdir -p data && chmod 755 data
+
+# Create non-root user for security
+RUN adduser --disabled-password --gecos '' appuser && \
+    chown -R appuser:appuser /app
+USER appuser
+
+# Expose port
+EXPOSE 8000
+
+# Set environment variables for development
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV FASTAPI_ENV=development
+
+# Development command with auto-reload
+CMD ["uv", "run", "fastapi", "dev", "main.py", "--host", "0.0.0.0", "--port", "8000", "--reload"]

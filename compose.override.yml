@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      dockerfile: ../docker/backend/Dockerfile.dev
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=true
+      - DEVELOPMENT=true
+    volumes:
+      # Add source code mounting for hot reload
+      - ./backend:/app:delegated
+      - backend_data:/app/data
+    # Remove restart policy for development
+    # Remove healthcheck for faster development
+
+  frontend:
+    build:
+      dockerfile: ../docker/frontend/Dockerfile.dev
+      args:
+        - VITE_API_URL=http://localhost:8000/api
+        - VITE_APP_NAME=TaskFlow
+    ports:
+      - "3000:3000"
+    volumes:
+      # Add source code mounting for hot reload
+      - ./frontend:/app:delegated
+      - /app/node_modules   # anonymous volume for node_modules
+    environment:
+      - NODE_ENV=development
